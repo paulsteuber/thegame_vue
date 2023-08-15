@@ -1,5 +1,10 @@
 <template>
   <div class="game-board">
+    <div class="npcs">
+      <div class="npc" v-for="(player, index) in PLAYERS" :key="index">
+        <h1>NPC {{ player }}</h1>
+      </div>
+    </div>
     <div class="stacks">
       <Stack
         v-for="(initialValue, index) in initialStackValues"
@@ -22,7 +27,9 @@ import {
   generateDeck,
   initialCardsForPlayer,
 } from "../composables/start";
+import { useGameStore } from "@/store/gameStore";
 
+const { PLAYERS } = useGameStore();
 const initialStackValues = [1, 1, 100, 100];
 const playerCards = ref<CardProps[]>([]);
 
