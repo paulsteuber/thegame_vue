@@ -5,6 +5,10 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -27,12 +31,5 @@
     "src/**/*.vue",
     "src/components.js"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }],
-
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  }
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
