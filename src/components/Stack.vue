@@ -1,12 +1,12 @@
 <template>
   <div class="stack" @click="() => addCardToStack">
-    <Card v-for="card in cards" :key="card.number" :number="card.number" />
+    <Card v-for="card in cards" :key="`card-${card.number}`" :card="card" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import Card from "./Card.vue";
+import Card from "@/components/Card/Card.vue";
 import { CardProps } from "../types/types";
 export interface StackProps {
   initialValue: number;
