@@ -28,7 +28,8 @@ import { useGameStore } from "@/store/gameStore";
 const { DECK, PLAYERS } = useGameStore();
 </script>
 
-<style>
+<style lang="scss">
+@import "./src/assets/styles/main.scss";
 .app {
   /* Hier kannst du den CSS-Stil für die Hauptkomponente anpassen */
 }

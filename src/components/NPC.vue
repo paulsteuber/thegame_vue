@@ -1,5 +1,5 @@
 <template>
-  <div class="npc">
+  <div class="npc tile bg-background-light p-3">
     <div class="npc-head">
       <h2>{{ player.name }}</h2>
     </div>
@@ -20,4 +20,7 @@ interface NPCProps {
 defineProps<NPCProps>();
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.npc {
+}
+</style>

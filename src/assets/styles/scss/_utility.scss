@@ -1,0 +1,25 @@
+.bg-primary {
+  background-color: $color-primary;
+}
+.bg-secondary {
+  background-color: $color-secondary;
+}
+.bg-background {
+  background-color: $color-background;
+}
+.bg-background-light {
+  background-color: $color-background-light;
+}
+
+.b-text {
+  border: $b-width solid $color-text;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.tile {
+  border-radius: $b-radius;
+  box-shadow: $shadow-light;
+}

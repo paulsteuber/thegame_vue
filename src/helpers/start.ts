@@ -18,13 +18,6 @@ export const generateDeck = (): number[] => {
   return shuffleDeck(deck);
 };
 
-export const initialCardsForPlayer = (
-  deck: CardProps[],
-  numberOfCards: number
-): CardProps[] => {
-  return deck.slice(0, numberOfCards);
-};
-
 export const getRandomNumber = (max: number) => {
   return Math.floor(Math.random() * max);
 };
@@ -53,4 +46,8 @@ export const generatePlayers = (
     }
   }
   return generatedPlayers;
+};
+
+export const playerDrawsCards = (deck: number[], count: number) => {
+  return [deck.slice(0, count), deck.slice(count)];
 };

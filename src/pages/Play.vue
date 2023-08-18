@@ -16,5 +16,7 @@ import { useGameStore } from "@/store/gameStore";
 import GameBoard from "@/components/GameBoard.vue";
 import NPC from "@/components/NPC.vue";
 
+const { startGame } = useGameStore();
+startGame(5);
 const { OTHER_PLAYERS } = useGameStore();
 </script>

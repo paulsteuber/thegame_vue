@@ -2,12 +2,13 @@ import {
   generatePlayers,
   getRandomNumber,
   generateDeck,
+  playerDrawsCards,
 } from "@/helpers/start";
 import { CardProps, PlayerBase } from "@/types/types";
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
-  const DECK = reactive<number[]>([]);
+  const DECK = ref<number[]>([]);
   const STACKS = reactive([
     { type: "upwards", cards: [] },
     { type: "upwards", cards: [] },
@@ -18,6 +19,7 @@ export const useGameStore = defineStore("gameStore", () => {
   const OTHER_PLAYERS = computed(() =>
     PLAYERS.filter((_player, index) => index !== HUMAN_PLAYER_INDEX.value)
   );
+  const MAX_PLAYER_CARDS = ref(7);
   const CURRENT_PLAYER_INDEX = ref(0);
   const HUMAN_PLAYER_INDEX = ref(0);
   const UNDO_LAST_MOVE = ref({});
@@ -27,17 +29,27 @@ export const useGameStore = defineStore("gameStore", () => {
     HUMAN_PLAYER_INDEX.value = getRandomNumber(count);
     PLAYERS.push(...generatePlayers(count, HUMAN_PLAYER_INDEX.value));
   };
-
+  const playersDrawCards = () => {
+    PLAYERS.forEach((player) => {
+      const count = MAX_PLAYER_CARDS.value - player.cards.length;
+      const [drawnCards, remainingDeck] = playerDrawsCards(DECK.value, count);
+      player.cards = drawnCards.map((cardNumber) => ({
+        number: cardNumber,
+      }));
+      DECK.value = remainingDeck;
+    });
+  };
   const startGame = (playerCount: number) => {
     clearGame();
     setPlayers(playerCount);
-    DECK.push(...generateDeck());
+    DECK.value = generateDeck();
+    playersDrawCards();
     //
   };
 
   const clearGame = () => {
     PLAYERS.length = 0;
-    DECK.length = 0;
+    DECK.value = [];
   };
 
   return {
