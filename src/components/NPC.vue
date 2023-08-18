@@ -23,4 +23,8 @@ defineProps<NPCProps>();
 <style scoped lang="scss">
 .npc {
 }
+.npc-cards {
+  display: flex;
+  gap: 0.25rem;
+}
 </style>

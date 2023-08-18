@@ -23,3 +23,8 @@
   border-radius: $b-radius;
   box-shadow: $shadow-light;
 }
+
+.grid-center {
+  display: grid;
+  place-content: center;
+}

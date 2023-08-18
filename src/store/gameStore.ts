@@ -8,7 +8,7 @@ import { CardProps, PlayerBase } from "@/types/types";
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
-  const DECK = ref<number[]>([]);
+  const DECK = reactive<number[]>([]);
   const STACKS = reactive([
     { type: "upwards", cards: [] },
     { type: "upwards", cards: [] },
@@ -32,24 +32,25 @@ export const useGameStore = defineStore("gameStore", () => {
   const playersDrawCards = () => {
     PLAYERS.forEach((player) => {
       const count = MAX_PLAYER_CARDS.value - player.cards.length;
-      const [drawnCards, remainingDeck] = playerDrawsCards(DECK.value, count);
+      const [drawnCards, remainingDeck] = playerDrawsCards(DECK, count);
       player.cards = drawnCards.map((cardNumber) => ({
         number: cardNumber,
       }));
-      DECK.value = remainingDeck;
+      DECK.length = 0;
+      DECK.push(...remainingDeck);
     });
   };
   const startGame = (playerCount: number) => {
     clearGame();
     setPlayers(playerCount);
-    DECK.value = generateDeck();
+    DECK.push(...generateDeck());
     playersDrawCards();
     //
   };
 
   const clearGame = () => {
     PLAYERS.length = 0;
-    DECK.value = [];
+    DECK.length = 0;
   };
 
   return {

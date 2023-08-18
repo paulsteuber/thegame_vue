@@ -1,8 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card tile bg-primary grid-center">
     <NPCCard v-if="type === 'npc'" :card="card" />
     <HumanCard v-if="type === 'human'" :card="card" />
-
     {{ card.number }}
   </div>
 </template>
@@ -21,7 +20,6 @@ const props = defineProps<CardProps>();
 
 <style scoped lang="scss">
 .card {
-  background-color: sandybrown;
-  border: 1px solid white;
+  aspect-ratio: 3/4;
 }
 </style>

@@ -31,6 +31,9 @@ const { DECK, PLAYERS } = useGameStore();
 <style lang="scss">
 @import "./src/assets/styles/main.scss";
 .app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   /* Hier kannst du den CSS-Stil für die Hauptkomponente anpassen */
 }
 .flex-x {
