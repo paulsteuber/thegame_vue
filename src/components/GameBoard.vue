@@ -1,5 +1,5 @@
 <template>
-  <div class="game-board">
+  <div class="game-board py-8">
     <div class="stacks">
       <Stack
         v-for="(initialValue, index) in initialStackValues"
@@ -21,6 +21,10 @@ const stacks = ref<any[]>([]);
 </script>
 
 <style scoped lang="scss">
+.game-board {
+  display: grid;
+  place-items: center;
+}
 .stacks {
   display: flex;
 }

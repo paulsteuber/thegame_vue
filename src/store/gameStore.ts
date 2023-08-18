@@ -43,7 +43,7 @@ export const useGameStore = defineStore("gameStore", () => {
   const startGame = (playerCount: number) => {
     clearGame();
     setPlayers(playerCount);
-    DECK.push(...generateDeck());
+    DECK.push(...generateDeck(99));
     playersDrawCards();
     //
   };

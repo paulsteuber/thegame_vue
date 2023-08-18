@@ -1,5 +1,5 @@
 <template>
-  <div class="npc-container grid-center">
+  <div class="npc-container">
     <NPC
       v-if="OTHER_PLAYERS.length"
       v-for="player in OTHER_PLAYERS"
@@ -17,18 +17,26 @@
 </template>
 <script lang="ts" setup>
 import { useGameStore } from "@/store/gameStore";
+import usePlayRounds from "@/composables/usePlayRounds";
 import GameBoard from "@/components/GameBoard.vue";
 import NPC from "@/components/NPC.vue";
 import HumanPlayer from "@/components/HumanPlayer.vue";
 
-const { startGame } = useGameStore();
+const { startGame, OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX } =
+  useGameStore();
+const { letNextPlayerPlay } = usePlayRounds();
+// Start the game
 startGame(5);
-const { OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX } = useGameStore();
+
+// Start playing
+setTimeout(() => {
+  letNextPlayerPlay();
+}, 3000);
 </script>
 
 <style lang="scss" scoped>
 .npc-container {
-  grid-gap: 0.25rem;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

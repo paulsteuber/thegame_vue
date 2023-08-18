@@ -25,6 +25,7 @@ defineProps<NPCProps>();
 }
 .npc-cards {
   display: flex;
+  justify-content: center;
   gap: 0.25rem;
 }
 </style>

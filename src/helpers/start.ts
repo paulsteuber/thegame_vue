@@ -10,9 +10,9 @@ const shuffleDeck = (deck: number[]): number[] => {
   return shuffled;
 };
 
-export const generateDeck = (): number[] => {
+export const generateDeck = (max: number): number[] => {
   const deck: number[] = [];
-  for (let i = 2; i <= 99; i++) {
+  for (let i = 2; i <= max; i++) {
     deck.push(i);
   }
   return shuffleDeck(deck);
