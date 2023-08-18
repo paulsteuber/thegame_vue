@@ -4,16 +4,17 @@ import {
   generateDeck,
   playerDrawsCards,
 } from "@/helpers/start";
-import { CardProps, PlayerBase } from "@/types/types";
+import { CardProps, PlayerBase, Stack } from "@/types/types";
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
+  const CARD_COUNT = ref<number>(99);
   const DECK = reactive<number[]>([]);
-  const STACKS = reactive([
-    { type: "upwards", cards: [] },
-    { type: "upwards", cards: [] },
-    { type: "downwards", cards: [] },
-    { type: "downwards", cards: [] },
+  const STACKS = reactive<Stack[]>([
+    { type: "upwards", cards: [{ number: 1 }] },
+    { type: "upwards", cards: [{ number: 1 }] },
+    { type: "downwards", cards: [{ number: CARD_COUNT.value }] },
+    { type: "downwards", cards: [{ number: CARD_COUNT.value }] },
   ]);
   const PLAYERS = reactive<PlayerBase[]>([]);
   const OTHER_PLAYERS = computed(() =>
@@ -45,7 +46,6 @@ export const useGameStore = defineStore("gameStore", () => {
     setPlayers(playerCount);
     DECK.push(...generateDeck(99));
     playersDrawCards();
-    //
   };
 
   const clearGame = () => {
@@ -54,6 +54,7 @@ export const useGameStore = defineStore("gameStore", () => {
   };
 
   return {
+    CARD_COUNT,
     DECK,
     STACKS,
     PLAYERS,

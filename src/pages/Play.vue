@@ -21,13 +21,15 @@ import usePlayRounds from "@/composables/usePlayRounds";
 import GameBoard from "@/components/GameBoard.vue";
 import NPC from "@/components/NPC.vue";
 import HumanPlayer from "@/components/HumanPlayer.vue";
+import { storeToRefs } from "pinia";
 
-const { startGame, OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX } =
-  useGameStore();
+const { OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX } = storeToRefs(
+  useGameStore()
+);
+const { startGame } = useGameStore();
 const { letNextPlayerPlay } = usePlayRounds();
 // Start the game
 startGame(5);
-
 // Start playing
 setTimeout(() => {
   letNextPlayerPlay();
