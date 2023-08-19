@@ -1,27 +1,21 @@
 import { MoveTree, Recommendation } from "@/types/bestCardFinder";
-import {
-  Card,
-  NPC,
-  SingleCardStack,
-  Stack,
-  StackCard,
-  StackType,
-} from "@/types/types";
+import { Card, NPC, SingleCardStack, Stack } from "@/types/types";
 
 import {
   generateSingleCardStacks,
   calcDistance,
   deepCloneArray,
+  generateAllRecommendations,
+  findBestRecommendation,
 } from "@/helpers/cardfinder";
 
 export default () => {
-  const recursiveSearch = (
+  const generateMoveTree = (
     playerCards: Card[],
     singleCardStacks: SingleCardStack[],
     deepness: number = 1,
     totalDistance: number = 0
   ): MoveTree[][] => {
-    console.log("recursive");
     const possibleMoves: MoveTree[][] = playerCards.map((card) => {
       const restCards = playerCards.filter(
         (restCard) => restCard.number !== card.number
@@ -40,7 +34,7 @@ export default () => {
               weight: distance,
               distance: distance,
               targetStackId: stackIndex,
-              nextMoves: recursiveSearch(
+              nextMoves: generateMoveTree(
                 restCards,
                 updatedStacks,
                 deepness + 1,
@@ -57,25 +51,33 @@ export default () => {
     return possibleMoves;
   };
 
-  const collectAllPossibleMoves = (
+  const generateAllPossibleMoves = (
     playerCards: Card[],
     stacks: Stack[],
     maxCardCount: number
   ) => {
     const singleCardStacks = generateSingleCardStacks(stacks, maxCardCount);
-
-    console.log("before recursive");
-    return recursiveSearch(playerCards, singleCardStacks);
+    return generateMoveTree(playerCards, singleCardStacks);
   };
 
   const findBestCardsToPlay = (
     currentPlayer: NPC,
     stacks: Stack[],
-    maxCardCount: number
+    maxCardCount: number,
+    deck: number[]
   ): Recommendation => {
-    console.log(
-      collectAllPossibleMoves(currentPlayer.cards, stacks, maxCardCount)
+    const possibleMoves = generateAllPossibleMoves(
+      currentPlayer.cards,
+      stacks,
+      maxCardCount
+    ).flat();
+    const allRecommendations = generateAllRecommendations(possibleMoves);
+    const bestRecommendation = findBestRecommendation(
+      allRecommendations,
+      deck.length > 0
     );
+
+    console.log(bestRecommendation);
     return {} as Recommendation;
   };
   return { findBestCardsToPlay };

@@ -34,7 +34,7 @@ startGame(5);
 setTimeout(() => {
   console.log("Start");
   letNextPlayerPlay();
-}, 3000);
+}, 1000);
 </script>
 
 <style lang="scss" scoped>

@@ -11,6 +11,7 @@ export default () => {
     HUMAN_PLAYER_INDEX,
     CURRENT_PLAYER_INDEX,
     CARD_COUNT,
+    DECK,
   } = storeToRefs(useGameStore());
 
   const letNextPlayerPlay = () => {
@@ -20,7 +21,8 @@ export default () => {
     const recommendation: Recommendation = findBestCardsToPlay(
       currentPlayer,
       STACKS.value,
-      CARD_COUNT.value
+      CARD_COUNT.value,
+      DECK.value
     );
   };
   return { letNextPlayerPlay };

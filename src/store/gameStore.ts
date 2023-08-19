@@ -20,7 +20,7 @@ export const useGameStore = defineStore("gameStore", () => {
   const OTHER_PLAYERS = computed(() =>
     PLAYERS.filter((_player, index) => index !== HUMAN_PLAYER_INDEX.value)
   );
-  const MAX_PLAYER_CARDS = ref(7);
+  const MAX_PLAYER_CARDS = ref(6);
   const CURRENT_PLAYER_INDEX = ref(0);
   const HUMAN_PLAYER_INDEX = ref(0);
   const UNDO_LAST_MOVE = ref({});
