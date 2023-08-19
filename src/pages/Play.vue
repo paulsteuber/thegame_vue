@@ -32,6 +32,7 @@ const { letNextPlayerPlay } = usePlayRounds();
 startGame(5);
 // Start playing
 setTimeout(() => {
+  console.log("Start");
   letNextPlayerPlay();
 }, 3000);
 </script>

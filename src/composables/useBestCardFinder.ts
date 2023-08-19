@@ -1,4 +1,4 @@
-import { Recommendation } from "@/types/bestCardFinder";
+import { MoveTree, Recommendation } from "@/types/bestCardFinder";
 import {
   Card,
   NPC,
@@ -7,46 +7,75 @@ import {
   StackCard,
   StackType,
 } from "@/types/types";
-import { storeToRefs } from "pinia";
-import { useGameStore } from "@/store/gameStore";
+
+import {
+  generateSingleCardStacks,
+  calcDistance,
+  deepCloneArray,
+} from "@/helpers/cardfinder";
 
 export default () => {
-  const { CARD_COUNT } = storeToRefs(useGameStore());
-  const recursiveSearch = () => {};
-  //const calculateWeight = (cardValue: number, lastStackCard) => {};
+  const recursiveSearch = (
+    playerCards: Card[],
+    singleCardStacks: SingleCardStack[],
+    deepness: number = 1,
+    totalDistance: number = 0
+  ): MoveTree[][] => {
+    console.log("recursive");
+    const possibleMoves: MoveTree[][] = playerCards.map((card) => {
+      const restCards = playerCards.filter(
+        (restCard) => restCard.number !== card.number
+      );
 
-  const getStackFillState = (
-    lastStackCard: StackCard,
-    stackType: StackType
-  ) => {
-    return stackType === "downwards"
-      ? (CARD_COUNT.value - 1 - lastStackCard.number) / CARD_COUNT.value
-      : lastStackCard.number / CARD_COUNT.value - 1;
+      const nextPossibleMoves: MoveTree[] = singleCardStacks
+        .map((stack, stackIndex) => {
+          const distance = calcDistance(card.number, stack);
+
+          if (distance > 0 || distance === -10) {
+            if (deepness > 2 && distance > 5) return null;
+            const updatedStacks = deepCloneArray(singleCardStacks);
+            updatedStacks[stackIndex].lastCard = card;
+            return {
+              card: card,
+              weight: distance,
+              distance: distance,
+              targetStackId: stackIndex,
+              nextMoves: recursiveSearch(
+                restCards,
+                updatedStacks,
+                deepness + 1,
+                totalDistance + distance
+              ),
+            };
+          }
+          return null;
+        })
+        .filter(Boolean) as MoveTree[];
+
+      return nextPossibleMoves;
+    });
+    return possibleMoves;
   };
 
-  const collectAllPossibleMoves = (playerCards: Card[], stacks: Stack[]) => {
-    const singleCardStacks: SingleCardStack[] = stacks.map((stack) => {
-      const lastStackCard = stack.cards.slice(-1)[0];
-      return {
-        type: stack.type,
-        lastCard: lastStackCard,
-        fillState:
-          stack.cards.length > 1
-            ? getStackFillState(lastStackCard, stack.type)
-            : 0,
-      };
-    });
-    console.log("🔥", singleCardStacks);
-    const possibleMoves = playerCards.map((card) => {
-      //
-    });
+  const collectAllPossibleMoves = (
+    playerCards: Card[],
+    stacks: Stack[],
+    maxCardCount: number
+  ) => {
+    const singleCardStacks = generateSingleCardStacks(stacks, maxCardCount);
+
+    console.log("before recursive");
+    return recursiveSearch(playerCards, singleCardStacks);
   };
 
   const findBestCardsToPlay = (
     currentPlayer: NPC,
-    stacks: Stack[]
+    stacks: Stack[],
+    maxCardCount: number
   ): Recommendation => {
-    collectAllPossibleMoves(currentPlayer.cards, stacks);
+    console.log(
+      collectAllPossibleMoves(currentPlayer.cards, stacks, maxCardCount)
+    );
     return {} as Recommendation;
   };
   return { findBestCardsToPlay };
