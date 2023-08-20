@@ -5,6 +5,7 @@
       v-for="player in OTHER_PLAYERS"
       :key="`player-${player.name}`"
       :player="player"
+      :is-current-player="player.name === PLAYERS[CURRENT_PLAYER_INDEX].name"
       class="npc-card"
     />
   </div>
@@ -12,7 +13,11 @@
     <GameBoard :stacks="STACKS" />
   </div>
   <div class="human-player-container">
-    <HumanPlayer :player="PLAYERS[HUMAN_PLAYER_INDEX]" />
+    <HumanPlayer
+      :player="PLAYERS[HUMAN_PLAYER_INDEX]"
+      :is-current-player="CURRENT_PLAYER_INDEX === HUMAN_PLAYER_INDEX"
+      :is-allowed-to-finish-move="HUMAN_PLAYER_PLAYED_ENOUGH_CARDS"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -23,18 +28,21 @@ import NPC from "@/components/NPC.vue";
 import HumanPlayer from "@/components/HumanPlayer.vue";
 import { storeToRefs } from "pinia";
 
-const { OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX, STACKS } = storeToRefs(
-  useGameStore()
-);
+const {
+  OTHER_PLAYERS,
+  PLAYERS,
+  CURRENT_PLAYER_INDEX,
+  HUMAN_PLAYER_INDEX,
+  STACKS,
+  HUMAN_PLAYER_PLAYED_ENOUGH_CARDS,
+} = storeToRefs(useGameStore());
 const { startGame } = useGameStore();
-const { letNextPlayerPlay } = usePlayRounds();
+const { playNextPlayers } = usePlayRounds();
 // Start the game
 startGame(5);
 // Start playing
-setTimeout(() => {
-  console.log("Start");
-  letNextPlayerPlay();
-}, 1000);
+
+playNextPlayers();
 </script>
 
 <style lang="scss" scoped>

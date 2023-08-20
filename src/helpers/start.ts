@@ -48,6 +48,14 @@ export const generatePlayers = (
   return generatedPlayers;
 };
 
-export const playerDrawsCards = (deck: number[], count: number) => {
-  return [deck.slice(0, count), deck.slice(count)];
+export const playerDrawsCards = (
+  deck: number[],
+  count: number
+): [{ number: number }[], number[]] => {
+  return [
+    deck.slice(0, count).map((cardNumber) => ({
+      number: cardNumber,
+    })),
+    deck.slice(count),
+  ];
 };

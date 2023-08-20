@@ -1,5 +1,8 @@
 <template>
-  <div class="npc tile bg-background-light p-3">
+  <div
+    class="npc tile bg-secondary p-3"
+    :class="{ 'bg-background-light': isCurrentPlayer }"
+  >
     <div class="npc-head">
       <h2>{{ player.name }}</h2>
     </div>
@@ -16,6 +19,7 @@ import { NPC } from "@/types/types";
 
 interface NPCProps {
   player: NPC;
+  isCurrentPlayer: boolean;
 }
 defineProps<NPCProps>();
 </script>

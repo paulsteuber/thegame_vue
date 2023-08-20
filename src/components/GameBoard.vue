@@ -6,6 +6,8 @@
         :key="`board-stack-${index}`"
         :stack="stack"
         ref="stacks"
+        :ondrop="(event:DragEvent) => humanDroppedCard(event, index)"
+        :ondragover="(event:DragEvent) => event.preventDefault()"
       />
     </div>
   </div>
@@ -14,6 +16,9 @@
 <script setup lang="ts">
 import DiscardStack from "@/components/DiscardStack.vue";
 import { Stack } from "@/types/types";
+import usePlayRounds from "@/composables/usePlayRounds";
+
+const { humanDroppedCard } = usePlayRounds();
 
 interface GameBoardProps {
   stacks: Stack[];

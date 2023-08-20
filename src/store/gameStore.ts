@@ -4,7 +4,7 @@ import {
   generateDeck,
   playerDrawsCards,
 } from "@/helpers/start";
-import { CardProps, PlayerBase, Stack } from "@/types/types";
+import { CardProps, PlayedCard, PlayerBase, Stack } from "@/types/types";
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
@@ -23,6 +23,12 @@ export const useGameStore = defineStore("gameStore", () => {
   const MAX_PLAYER_CARDS = ref(6);
   const CURRENT_PLAYER_INDEX = ref(0);
   const HUMAN_PLAYER_INDEX = ref(0);
+  const HUMAN_PLAYER_PLAYED_CARDS = reactive<PlayedCard[]>([]);
+
+  const HUMAN_PLAYER_PLAYED_ENOUGH_CARDS = computed(() => {
+    const minimumPlayedCards = DECK.length ? 2 : 1;
+    return HUMAN_PLAYER_PLAYED_CARDS.length >= minimumPlayedCards;
+  });
   const UNDO_LAST_MOVE = ref({});
 
   const setPlayers = (count: number) => {
@@ -34,9 +40,8 @@ export const useGameStore = defineStore("gameStore", () => {
     PLAYERS.forEach((player) => {
       const count = MAX_PLAYER_CARDS.value - player.cards.length;
       const [drawnCards, remainingDeck] = playerDrawsCards(DECK, count);
-      player.cards = drawnCards.map((cardNumber) => ({
-        number: cardNumber,
-      }));
+      player.cards = drawnCards;
+
       DECK.length = 0;
       DECK.push(...remainingDeck);
     });
@@ -62,6 +67,9 @@ export const useGameStore = defineStore("gameStore", () => {
     CURRENT_PLAYER_INDEX,
     HUMAN_PLAYER_INDEX,
     UNDO_LAST_MOVE,
+    MAX_PLAYER_CARDS,
+    HUMAN_PLAYER_PLAYED_CARDS,
+    HUMAN_PLAYER_PLAYED_ENOUGH_CARDS,
     startGame,
   };
 });

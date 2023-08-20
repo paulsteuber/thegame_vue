@@ -11,6 +11,10 @@
         <span>{{ DECK }}</span>
       </div>
       <div class="flex-x">
+        <h3>STACKS:</h3>
+        <span>{{ allStacks }}</span>
+      </div>
+      <div class="flex-x">
         <h3>PLAYER:</h3>
       </div>
       <div class="flex-y">
@@ -24,8 +28,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { storeToRefs } from "pinia";
 import { useGameStore } from "@/store/gameStore";
-const { DECK, PLAYERS } = useGameStore();
+const { DECK, STACKS, PLAYERS } = storeToRefs(useGameStore());
+
+const allStacks = computed(() => {
+  return STACKS.value.map((stack) => stack.cards.map((card) => card.number));
+});
 </script>
 
 <style lang="scss">

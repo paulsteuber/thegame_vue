@@ -19,7 +19,10 @@ export interface StackProps {
 
 const props = defineProps<StackProps>();
 
-const visibleCards = computed(() => props.stack.cards.slice(0, 3));
+const visibleCards = computed(() => {
+  const stackLength = props.stack.cards.length;
+  return props.stack.cards.slice(stackLength - 3, stackLength);
+});
 </script>
 
 <style lang="scss" scoped>
