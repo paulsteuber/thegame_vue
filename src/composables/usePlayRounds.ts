@@ -24,6 +24,18 @@ export default () => {
       CARD_COUNT.value,
       DECK.value
     );
+    console.log("RECO", recommendation);
+
+    recommendation.cardRecommendations.forEach((cardReco) => {
+      // add card from recommendation list to stack
+      STACKS.value[cardReco.targetStackId].cards.push({
+        number: cardReco.cardNumber,
+      });
+      // and remove the card from players hand
+      currentPlayer.cards = currentPlayer.cards.filter(
+        (c) => c.number !== cardReco.cardNumber
+      );
+    });
   };
   return { letNextPlayerPlay };
 };

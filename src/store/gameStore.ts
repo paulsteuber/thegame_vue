@@ -13,8 +13,8 @@ export const useGameStore = defineStore("gameStore", () => {
   const STACKS = reactive<Stack[]>([
     { type: "upwards", cards: [{ number: 1 }] },
     { type: "upwards", cards: [{ number: 1 }] },
-    { type: "downwards", cards: [{ number: CARD_COUNT.value }] },
-    { type: "downwards", cards: [{ number: CARD_COUNT.value }] },
+    { type: "downwards", cards: [{ number: CARD_COUNT.value + 1 }] },
+    { type: "downwards", cards: [{ number: CARD_COUNT.value + 1 }] },
   ]);
   const PLAYERS = reactive<PlayerBase[]>([]);
   const OTHER_PLAYERS = computed(() =>

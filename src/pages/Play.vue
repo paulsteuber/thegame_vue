@@ -9,7 +9,7 @@
     />
   </div>
   <div class="game-board-container">
-    <GameBoard />
+    <GameBoard :stacks="STACKS" />
   </div>
   <div class="human-player-container">
     <HumanPlayer :player="PLAYERS[HUMAN_PLAYER_INDEX]" />
@@ -23,7 +23,7 @@ import NPC from "@/components/NPC.vue";
 import HumanPlayer from "@/components/HumanPlayer.vue";
 import { storeToRefs } from "pinia";
 
-const { OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX } = storeToRefs(
+const { OTHER_PLAYERS, PLAYERS, HUMAN_PLAYER_INDEX, STACKS } = storeToRefs(
   useGameStore()
 );
 const { startGame } = useGameStore();

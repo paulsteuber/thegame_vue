@@ -1,10 +1,10 @@
 <template>
   <div class="game-board py-8">
     <div class="stacks">
-      <Stack
-        v-for="(initialValue, index) in initialStackValues"
-        :key="index"
-        :initialValue="initialValue"
+      <DiscardStack
+        v-for="(stack, index) in stacks"
+        :key="`board-stack-${index}`"
+        :stack="stack"
         ref="stacks"
       />
     </div>
@@ -12,12 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import Stack from "./Stack.vue";
+import DiscardStack from "@/components/DiscardStack.vue";
+import { Stack } from "@/types/types";
 
-const initialStackValues = [1, 1, 100, 100];
-
-const stacks = ref<any[]>([]);
+interface GameBoardProps {
+  stacks: Stack[];
+}
+defineProps<GameBoardProps>();
 </script>
 
 <style scoped lang="scss">

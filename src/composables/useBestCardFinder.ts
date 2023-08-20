@@ -76,9 +76,7 @@ export default () => {
       allRecommendations,
       deck.length > 0
     );
-
-    console.log(bestRecommendation);
-    return {} as Recommendation;
+    return bestRecommendation;
   };
   return { findBestCardsToPlay };
 };
