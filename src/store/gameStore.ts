@@ -9,7 +9,7 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
   const CARD_COUNT = ref<number>(99);
-  const DECK = reactive<number[]>([]);
+  const DECK = ref<number[]>([]);
   const STACKS = reactive<Stack[]>([
     { type: "upwards", cards: [{ number: 1 }] },
     { type: "upwards", cards: [{ number: 1 }] },
@@ -26,7 +26,8 @@ export const useGameStore = defineStore("gameStore", () => {
   const HUMAN_PLAYER_PLAYED_CARDS = reactive<PlayedCard[]>([]);
 
   const HUMAN_PLAYER_PLAYED_ENOUGH_CARDS = computed(() => {
-    const minimumPlayedCards = DECK.length ? 2 : 1;
+    console.log("DECK LENGTH", DECK.value.length);
+    const minimumPlayedCards = DECK.value.length ? 2 : 1;
     return HUMAN_PLAYER_PLAYED_CARDS.length >= minimumPlayedCards;
   });
   const UNDO_LAST_MOVE = ref({});
@@ -39,23 +40,23 @@ export const useGameStore = defineStore("gameStore", () => {
   const playersDrawCards = () => {
     PLAYERS.forEach((player) => {
       const count = MAX_PLAYER_CARDS.value - player.cards.length;
-      const [drawnCards, remainingDeck] = playerDrawsCards(DECK, count);
+      const [drawnCards, remainingDeck] = playerDrawsCards(DECK.value, count);
       player.cards = drawnCards;
 
-      DECK.length = 0;
-      DECK.push(...remainingDeck);
+      DECK.value.length = 0;
+      DECK.value.push(...remainingDeck);
     });
   };
   const startGame = (playerCount: number) => {
     clearGame();
     setPlayers(playerCount);
-    DECK.push(...generateDeck(99));
+    DECK.value.push(...generateDeck(99));
     playersDrawCards();
   };
 
   const clearGame = () => {
     PLAYERS.length = 0;
-    DECK.length = 0;
+    DECK.value.length = 0;
   };
 
   return {

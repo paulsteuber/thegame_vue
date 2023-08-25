@@ -68,6 +68,7 @@ export default () => {
       MAX_PLAYER_CARDS.value - currentPlayer.cards.length
     );
     currentPlayer.cards = [...currentPlayer.cards, ...drawnCards];
+    console.log("Remaining Deck", remainingDeck.length);
     DECK.value = remainingDeck;
   };
 
@@ -94,14 +95,17 @@ export default () => {
     });
   };
   const playNextPlayers = () => {
-    if (HUMAN_PLAYER_INDEX.value === CURRENT_PLAYER_INDEX.value) return;
+    if (HUMAN_PLAYER_INDEX.value === CURRENT_PLAYER_INDEX.value) {
+      HUMAN_PLAYER_PLAYED_CARDS.value.length = 0;
+      return;
+    }
     setTimeout(() => {
       console.log("Start");
       letPlayerPlay();
       givePlayerNewCards();
       setCurrentPlayerIndexHigher();
       playNextPlayers();
-    }, 10);
+    }, 500);
   };
   return {
     letPlayerPlay,

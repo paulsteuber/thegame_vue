@@ -1,7 +1,7 @@
 <template>
   <div class="human-player bg-secondary p-3">
     <Card
-      v-for="card in player.cards"
+      v-for="card in sortedCards"
       :key="`human-card-${card.number}`"
       :card="card"
       draggable="true"
@@ -17,12 +17,14 @@
   </button>
 </template>
 <script lang="ts" setup>
+import { computed } from "vue";
 import Card from "./Card/Card.vue";
 import { PlayerBase } from "@/types/types";
 import usePlayRounds from "@/composables/usePlayRounds";
 
 const { playNextPlayers, setCurrentPlayerIndexHigher, givePlayerNewCards } =
   usePlayRounds();
+
 interface HumanPlayerProps {
   player: PlayerBase;
   isCurrentPlayer: boolean;
@@ -43,6 +45,9 @@ const humanFinishMove = () => {
   }
   // is user allowed to finish his move?
 };
+const sortedCards = computed(() => {
+  return props.player.cards.sort((a, b) => a.number - b.number);
+});
 </script>
 <style lang="scss" scoped>
 .human-player {

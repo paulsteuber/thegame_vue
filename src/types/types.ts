@@ -26,3 +26,8 @@ export interface PlayerBase {
   cards: Card[];
 }
 export interface NPC extends PlayerBase {}
+
+export interface PlayedCard {
+  cardNumber: number;
+  stackId: number;
+}

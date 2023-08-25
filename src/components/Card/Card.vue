@@ -22,5 +22,6 @@ const props = defineProps<CardProps>();
 .card {
   width: clamp(3rem, 6rem, 12rem);
   aspect-ratio: 3/4;
+  cursor: pointer;
 }
 </style>
