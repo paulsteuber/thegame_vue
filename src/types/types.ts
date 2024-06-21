@@ -32,3 +32,5 @@ export interface PlayedCard {
   cardNumber: number;
   stackId: number;
 }
+
+export type GameState = "playing" | "won" | "lost"  ;

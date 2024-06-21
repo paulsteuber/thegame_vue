@@ -4,7 +4,7 @@ import {
   generateDeck,
   playerDrawsCards,
 } from "@/helpers/start";
-import { PlayedCard, PlayerBase, Stack } from "@/types/types";
+import { GameState, PlayedCard, PlayerBase, Stack } from "@/types/types";
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
@@ -36,8 +36,16 @@ export const useGameStore = defineStore("gameStore", () => {
     const minimumPlayedCards = DECK.value.length ? 2 : 1;
     return HUMAN_PLAYER_PLAYED_CARDS.length >= minimumPlayedCards;
   });
+
+  const HUMAN_PLAYER = computed(() => PLAYERS[HUMAN_PLAYER_INDEX.value]);
+  const CURRENT_PLAYER = computed(() => PLAYERS[CURRENT_PLAYER_INDEX.value]);
+  const GAME_STATE = ref<GameState>("playing");
+
   const UNDO_LAST_MOVE = ref({});
 
+  const updateGameState = (newState: GameState) => {
+    GAME_STATE.value = newState;
+  }
   const setPlayers = (count: number) => {
     // set human player index
     HUMAN_PLAYER_INDEX.value = getRandomNumber(count);
@@ -72,11 +80,13 @@ export const useGameStore = defineStore("gameStore", () => {
     PLAYERS,
     OTHER_PLAYERS,
     CURRENT_PLAYER_INDEX,
-    HUMAN_PLAYER_INDEX,
+    HUMAN_PLAYER_INDEX,HUMAN_PLAYER,CURRENT_PLAYER,
     UNDO_LAST_MOVE,
     MAX_PLAYER_CARDS,
     HUMAN_PLAYER_PLAYED_CARDS,
     HUMAN_PLAYER_PLAYED_ENOUGH_CARDS,
+    GAME_STATE,
     startGame,
+    updateGameState
   };
 });

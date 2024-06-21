@@ -1,4 +1,7 @@
 <template>
+  <div v-if="GAME_STATE !== 'playing'" class="game-state-message">
+    <h1>{{ GAME_STATE }}</h1>
+  </div>
   <div class="game-board py-8">
     <div class="stacks">
       <DiscardStack
@@ -17,8 +20,11 @@
 import DiscardStack from "@/components/DiscardStack.vue";
 import { Stack } from "@/types/types";
 import usePlayRounds from "@/composables/usePlayRounds";
+import { storeToRefs } from "pinia";
+import { useGameStore } from "@/store/gameStore";
 
 const { humanDroppedCard } = usePlayRounds();
+const { GAME_STATE } = storeToRefs(useGameStore());
 
 interface GameBoardProps {
   stacks: Stack[];

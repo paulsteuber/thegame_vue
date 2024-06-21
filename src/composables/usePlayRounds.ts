@@ -7,9 +7,10 @@ import { Stack } from "@/types/types";
 
 export default () => {
   const { findBestCardsToPlay } = useBestCardFinder();
+  const  { updateGameState } = useGameStore();
   const {
     STACKS,
-    PLAYERS,
+    PLAYERS,HUMAN_PLAYER,
     HUMAN_PLAYER_INDEX,
     CURRENT_PLAYER_INDEX,
     CARD_COUNT,
@@ -29,8 +30,27 @@ export default () => {
   };
 
   const letPlayerPlay = () => {
+    // let human player decide what he wanna play
     if (HUMAN_PLAYER_INDEX.value === CURRENT_PLAYER_INDEX.value) return;
+
     const currentPlayer = PLAYERS.value[CURRENT_PLAYER_INDEX.value];
+
+    if (currentPlayer.cards.length === 0) {
+      // check if there is at least one player with cards
+      const playersWithCards = PLAYERS.value.filter(
+        (player) => player.cards.length > 0
+      );
+      if (playersWithCards.length === 0){
+        // WIN
+        console.log("###### WIN - CONGRATULATION ########")
+        updateGameState("won");
+        return;
+      } else {
+        console.log("PLAYER", currentPlayer.name, "HAS NO CARDS");
+        return;
+      }
+    }
+    console.log("CURRENT PLAYER", currentPlayer.name)
     const recommendation: Recommendation = findBestCardsToPlay(
       currentPlayer,
       STACKS.value,
@@ -38,6 +58,28 @@ export default () => {
       DECK.value
     );
     console.log("RECO", recommendation);
+
+    // check if player can't play anymore
+    // if player has to play at least one cards but can't play them
+    if(!recommendation && DECK.value.length === 0) {
+      // GAME OVER
+      console.log(currentPlayer.name, "###### GAME OVER ######");
+      updateGameState("lost");
+      return;
+    }
+
+    // if player has to play  at least 2 cards but can't play them   
+    if(recommendation?.cardRecommendations.length < 2 && DECK.value.length > 0) {
+      // GAME OVER
+
+      console.log(currentPlayer.name, "###### GAME OVER ######");
+      updateGameState("lost");
+      return;
+    }
+
+ 
+    
+
 
     recommendation.cardRecommendations.forEach((cardReco) => {
       // add card from recommendation list to stack
@@ -94,8 +136,20 @@ export default () => {
       stackId: stackId,
     });
   };
+
   const playNextPlayers = () => {
     if (HUMAN_PLAYER_INDEX.value === CURRENT_PLAYER_INDEX.value) {
+      const humanPlayerRecommendations = findBestCardsToPlay(
+        HUMAN_PLAYER.value,
+        STACKS.value,
+        CARD_COUNT.value,
+        DECK.value
+      );
+      if(humanPlayerRecommendations?.cardRecommendations?.length === 0){
+        updateGameState("lost");
+        console.log(" >>>>>>>>>>>>GAME OVER<<<<<<<<<<<");
+        return;
+      }
       HUMAN_PLAYER_PLAYED_CARDS.value.length = 0;
       return;
     }
@@ -107,6 +161,7 @@ export default () => {
       playNextPlayers();
     }, 500);
   };
+
   return {
     letPlayerPlay,
     setCurrentPlayerIndexHigher,
