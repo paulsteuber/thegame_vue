@@ -4,7 +4,7 @@ import {
   generateDeck,
   playerDrawsCards,
 } from "@/helpers/start";
-import { CardProps, PlayedCard, PlayerBase, Stack } from "@/types/types";
+import { PlayedCard, PlayerBase, Stack } from "@/types/types";
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 export const useGameStore = defineStore("gameStore", () => {
@@ -17,8 +17,14 @@ export const useGameStore = defineStore("gameStore", () => {
     { type: "downwards", cards: [{ number: CARD_COUNT.value + 1 }] },
   ]);
   const PLAYERS = reactive<PlayerBase[]>([]);
-  const OTHER_PLAYERS = computed(() =>
-    PLAYERS.filter((_player, index) => index !== HUMAN_PLAYER_INDEX.value)
+  const OTHER_PLAYERS = computed(() => {
+    const playersWithHigherIndex = PLAYERS.filter((_player, index) => index > HUMAN_PLAYER_INDEX.value);
+    const playersWithLowerIndex = PLAYERS.filter((_player, index) => index < HUMAN_PLAYER_INDEX.value);
+    return [
+      ...playersWithHigherIndex,
+      ...playersWithLowerIndex,
+    ];
+  }
   );
   const MAX_PLAYER_CARDS = ref(6);
   const CURRENT_PLAYER_INDEX = ref(0);

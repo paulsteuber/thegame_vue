@@ -2,10 +2,11 @@
   <div class="npc-container">
     <NPC
       v-if="OTHER_PLAYERS.length"
-      v-for="player in OTHER_PLAYERS"
+      v-for="(player) in OTHER_PLAYERS"
       :key="`player-${player.name}`"
       :player="player"
       :is-current-player="player.name === PLAYERS[CURRENT_PLAYER_INDEX].name"
+      :positionIndex="player.positionIndex"
       class="npc-card"
     />
   </div>
@@ -37,6 +38,10 @@ const {
   HUMAN_PLAYER_PLAYED_ENOUGH_CARDS,
 } = storeToRefs(useGameStore());
 const { startGame } = useGameStore();
+
+/**
+ *  PLAY LOGIC
+ */
 const { playNextPlayers } = usePlayRounds();
 // Start the game
 startGame(5);

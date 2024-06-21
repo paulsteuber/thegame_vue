@@ -23,6 +23,7 @@ export interface StackCard {
 }
 export interface PlayerBase {
   name: string;
+  positionIndex: number;
   cards: Card[];
 }
 export interface NPC extends PlayerBase {}

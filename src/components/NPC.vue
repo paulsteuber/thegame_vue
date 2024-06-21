@@ -5,6 +5,7 @@
   >
     <div class="npc-head">
       <h2>{{ player.name }}</h2>
+      <span>{{ positionIndex + 1 }}</span>
     </div>
     <div class="npc-cards">
       <Card v-for="card in player.cards" :card="card" type="npc" />
@@ -19,6 +20,7 @@ import { NPC } from "@/types/types";
 
 interface NPCProps {
   player: NPC;
+  positionIndex: number;
   isCurrentPlayer: boolean;
 }
 defineProps<NPCProps>();

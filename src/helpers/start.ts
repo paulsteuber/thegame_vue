@@ -1,4 +1,4 @@
-import { CardProps, PlayerBase } from "../types/types";
+import { PlayerBase } from "../types/types";
 import { PLAYERNAMES } from "../../playernames";
 
 const shuffleDeck = (deck: number[]): number[] => {
@@ -21,12 +21,15 @@ export const generateDeck = (max: number): number[] => {
 export const getRandomNumber = (max: number) => {
   return Math.floor(Math.random() * max);
 };
-export const generateNewPlayer = (name: string): PlayerBase => {
+
+export const generateNewPlayer = (name: string, positionIndex: number): PlayerBase => {
   return {
     name: name,
+    positionIndex,
     cards: [],
   };
 };
+
 export const generatePlayers = (
   count: number,
   humanPlayerIndex: number
@@ -36,13 +39,13 @@ export const generatePlayers = (
 
   for (let i = 0; i < count; i++) {
     if (humanPlayerIndex === i) {
-      generatedPlayers.push(generateNewPlayer("Du"));
+      generatedPlayers.push(generateNewPlayer("Du", i));
     } else {
       const newPlayerName = playerNames[getRandomNumber(playerNames.length)];
 
       playerNames = playerNames.filter((name) => name !== newPlayerName);
 
-      generatedPlayers.push(generateNewPlayer(newPlayerName));
+      generatedPlayers.push(generateNewPlayer(newPlayerName, i));
     }
   }
   return generatedPlayers;
